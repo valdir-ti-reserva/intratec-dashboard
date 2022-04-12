@@ -1,10 +1,7 @@
-import React from 'react';
-import {Topbar} from './components/Topbar'
-
 function App() {
   return (
     <div className="App">
-      <Topbar />
+      <div>Dashboard Intratec tecnologia</div>
     </div>
   );
 }
