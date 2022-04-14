@@ -1,10 +1,10 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
-import { Home } from './Home'
-import { List } from './List'
-import { Login } from './Login'
-import { New } from './New'
-import { Single } from './Single'
+import { Home } from './pages/Home'
+import { List } from './pages/List'
+import { Login } from './pages/Login'
+import { New } from './pages/New'
+import { Single } from './pages/Single'
 
 function App() {
   return (
