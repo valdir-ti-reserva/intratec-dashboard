@@ -1,3 +1,4 @@
+import { Navbar } from '../../components/Navbar'
 import { Sidebar } from '../../components/Sidebar'
 import './styles.scss'
 
@@ -6,7 +7,8 @@ function Home() {
     <div className="home">
         <Sidebar />
         <div className="homeContainer">
-          Container
+          <Navbar />
+          Home Container
         </div>
     </div>
   )

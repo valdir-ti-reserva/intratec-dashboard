@@ -27,6 +27,7 @@ function Sidebar() {
                     <DashboardIcon className='icon' />
                     <span>Dashboard</span>
                 </li>
+                <hr />
                 <p className="title">LISTS</p>
                 <li>
                     <PersonOutlineIcon className='icon' />
@@ -44,6 +45,7 @@ function Sidebar() {
                     <LocalShippingIcon className='icon' />
                     <span>Delivery</span>
                 </li>
+                <hr />
                 <p className="title">USEFUL</p>
                 <li>
                     <QueryStatsIcon className='icon' />
@@ -53,6 +55,7 @@ function Sidebar() {
                     <NotificationsNoneIcon className='icon' />
                     <span>Notifications</span>
                 </li>
+                <hr />
                 <p className="title">SERVICE</p>
                 <li>
                     <CloudCircleIcon className='icon' />
@@ -66,6 +69,7 @@ function Sidebar() {
                     <SettingsIcon className='icon' />
                     <span>Settings</span>
                 </li>
+                <hr />
                 <p className="title">USER</p>
                 <li>
                     <PermContactCalendarIcon className='icon' />
@@ -77,6 +81,7 @@ function Sidebar() {
                 </li>
             </ul>
         </div>
+        <hr />
         <div className="bottom">
             <div className="colorOption">
                 
