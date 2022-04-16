@@ -1,3 +1,5 @@
+import { Chart } from '../../components/Chart'
+import { FeaturedChart } from '../../components/FeaturedChart'
 import { Navbar } from '../../components/Navbar'
 import { Sidebar } from '../../components/Sidebar'
 import { Widget } from '../../components/Widget'
@@ -14,6 +16,10 @@ function Home() {
             <Widget type="order" />
             <Widget type="earning" />
             <Widget type="balance" />
+          </div>
+          <div className="charts">
+            <FeaturedChart />
+            <Chart />
           </div>
         </div>
     </div>
