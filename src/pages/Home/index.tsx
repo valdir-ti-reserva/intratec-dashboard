@@ -2,6 +2,7 @@ import { Chart } from '../../components/Chart'
 import { FeaturedChart } from '../../components/FeaturedChart'
 import { Navbar } from '../../components/Navbar'
 import { Sidebar } from '../../components/Sidebar'
+import { List } from '../../components/Table'
 import { Widget } from '../../components/Widget'
 import './styles.scss'
 
@@ -20,6 +21,10 @@ function Home() {
           <div className="charts">
             <FeaturedChart />
             <Chart />
+          </div>
+          <div className="listContainer">
+            <div className="listTitle">Latest Transactions</div>
+            <List />
           </div>
         </div>
     </div>
