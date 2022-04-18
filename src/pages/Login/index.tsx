@@ -20,6 +20,7 @@ function Login() {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user
+        console.log(user)
         navigate("/")
       }).catch((err) => {
         setError(true)
