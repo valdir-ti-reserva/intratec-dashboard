@@ -1,15 +1,19 @@
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-import StoreIcon from '@mui/icons-material/Store';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import CloudCircleIcon from '@mui/icons-material/CloudCircle';
-import PsychologyIcon from '@mui/icons-material/Psychology';
-import SettingsIcon from '@mui/icons-material/Settings';
-import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { Link } from 'react-router-dom'
+
+import { 
+    Dashboard, 
+    PersonOutline, 
+    Store, 
+    CreditCard, 
+    LocalShipping, 
+    QueryStats, 
+    NotificationsNone,
+    CloudCircle,
+    Psychology, 
+    Settings,
+    PermContactCalendar,
+    Logout
+} from '@mui/icons-material'
 
 import './styles.scss'
 
@@ -17,66 +21,74 @@ function Sidebar() {
   return (
     <div className="sidebar">
         <div className="top">
-            <span className="logo">Intratec Tecnologia</span>
+            <Link to="/" style={{textDecoration: 'none'}}>
+                <span className="logo">Intratec Tecnologia</span>
+            </Link>
         </div>
         <hr />
         <div className="center">
             <ul>
                 <p className="title">MAIN</p>
-                <li>
-                    <DashboardIcon className='icon' />
-                    <span>Dashboard</span>
-                </li>
+                <Link to="/" style={{textDecoration: 'none'}}>
+                    <li>
+                        <Dashboard className='icon' />
+                        <span>Dashboard</span>
+                    </li>
+                </Link>
                 <hr />
                 <p className="title">LISTS</p>
+                <Link to="/users" style={{textDecoration: 'none'}}>
+                    <li>
+                        <PersonOutline className='icon' />
+                        <span>Users</span>
+                    </li>
+                </Link>
+                <Link to="/products" style={{textDecoration: 'none'}}>
+                    <li>
+                        <Store className='icon' />
+                        <span>Products</span>
+                    </li>
+                </Link>
                 <li>
-                    <PersonOutlineIcon className='icon' />
-                    <span>Users</span>
-                </li>
-                <li>
-                    <StoreIcon className='icon' />
-                    <span>Products</span>
-                </li>
-                <li>
-                    <CreditCardIcon className='icon' />
+                    <CreditCard className='icon' />
                     <span>Orders</span>
                 </li>
                 <li>
-                    <LocalShippingIcon className='icon' />
+                    <LocalShipping className='icon' />
                     <span>Delivery</span>
                 </li>
                 <hr />
                 <p className="title">USEFUL</p>
                 <li>
-                    <QueryStatsIcon className='icon' />
+                    <QueryStats className='icon' />
                     <span>Stats</span>
                 </li>
                 <li>
-                    <NotificationsNoneIcon className='icon' />
+                    <NotificationsNone className='icon' />
                     <span>Notifications</span>
                 </li>
                 <hr />
                 <p className="title">SERVICE</p>
                 <li>
-                    <CloudCircleIcon className='icon' />
+                    <CloudCircle className='icon' />
                     <span>System Health</span>
                 </li>
                 <li>
-                    <PsychologyIcon className='icon' />
+                    <Psychology className='icon' />
                     <span>Logs</span>
                 </li>
                 <li>
-                    <SettingsIcon className='icon' />
+                    <Settings className='icon' />
                     <span>Settings</span>
                 </li>
                 <hr />
                 <p className="title">USER</p>
                 <li>
-                    <PermContactCalendarIcon className='icon' />
+                    <PermContactCalendar className='icon' />
                     <span> Profile</span>
                 </li>
                 <li>
-                    <LogoutIcon className='icon' />
+                    <Logout className='icon' />
                     <span>Logout</span>
                 </li>
             </ul>
@@ -97,4 +109,4 @@ function Sidebar() {
   )
 }
 
-export {Sidebar}
+export { Sidebar }

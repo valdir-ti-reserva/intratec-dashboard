@@ -1,4 +1,6 @@
 import { AccountBalanceOutlined, KeyboardArrowUp, MonetizationOnOutlined, PersonOutlineOutlined, ShoppingCartOutlined } from '@mui/icons-material'
+import { Link } from 'react-router-dom'
+
 import './styles.scss'
 
 interface IWidget {
@@ -8,10 +10,10 @@ interface IWidget {
 function Widget({ type }: IWidget) {
 
   //Temporary
-  const amount = 100;
-  const diff = 20;
+  const amount = 100
+  const diff = 20
 
-  let data;
+  let data
 
   switch(type){
     case "user":
@@ -19,6 +21,7 @@ function Widget({ type }: IWidget) {
         title: "Users",
         isMoney: false,
         link: "See all users",
+        route: "users",
         icon: (
           <PersonOutlineOutlined 
             className='icon' 
@@ -32,6 +35,7 @@ function Widget({ type }: IWidget) {
         title: "Orders",
         isMoney: false,
         link: "See all orders",
+        route: "orders",
         icon: (
           <ShoppingCartOutlined 
             className='icon'
@@ -45,6 +49,7 @@ function Widget({ type }: IWidget) {
         title: "Earnings",
         isMoney: true,
         link: "View net earnings",
+        route: "earnings",
         icon: (
           <MonetizationOnOutlined 
             className='icon'
@@ -58,6 +63,7 @@ function Widget({ type }: IWidget) {
         title: "Balance",
         isMoney: true,
         link: "See details",
+        route: "balance",
         icon: (
           <AccountBalanceOutlined 
             className='icon'
@@ -75,7 +81,9 @@ function Widget({ type }: IWidget) {
       <div className="left">
         <span className="title">{data?.title}</span>
         <span className="counter">{data?.isMoney && 'R$'} {amount}</span>
-        <span className="link">{data?.link}</span>
+        <Link to={data?.route || "/"} style={{textDecoration: 'none', color: "#000"}}>
+          <span className="link">{data?.link}</span>
+        </Link>
       </div>
       <div className="right">
         <div className="percentage positive">
