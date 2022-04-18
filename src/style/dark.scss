@@ -20,6 +20,14 @@
         
         .search {
             border-color: gray;
+
+            input {
+                color: gray;
+
+                &::placeholder{
+                    color: gray;
+                }
+            }
         }
     }
     
