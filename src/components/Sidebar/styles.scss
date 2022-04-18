@@ -9,7 +9,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: antiquewhite;
 
         .logo {
             font-size: 20px;
@@ -83,10 +82,7 @@
                 background-color: whitesmoke;
             }
             &:nth-child(2){
-                background-color: #7451f8;
-            }
-            &:nth-child(3){
-                background-color: green;
+                background-color: #000000;
             }
         }
     }
