@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { ChatBubbleOutlineOutlined, DarkModeOutlined, FullscreenExitOutlined, LanguageOutlined, ListOutlined, NotificationsNoneOutlined, SearchOutlined, LightMode } from "@mui/icons-material"
-import { DarkModeContext } from "../../context/darkModeContext";
+import { DarkModeContext } from "../../context/darkmode/darkModeContext";
 
 import './styles.scss'
 

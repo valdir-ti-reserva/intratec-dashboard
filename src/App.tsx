@@ -8,7 +8,7 @@ import { New } from './pages/New'
 import { Single } from './pages/Single'
 import { userInputs, productInputs } from './formSource'
 
-import { DarkModeContext } from './context/darkModeContext'
+import { DarkModeContext } from './context/darkmode/darkModeContext'
 
 import './style/dark.scss'
 

@@ -16,7 +16,7 @@ import {
     Logout
 } from '@mui/icons-material'
 
-import { DarkModeContext } from '../../context/darkModeContext'
+import { DarkModeContext } from '../../context/darkmode/darkModeContext'
 
 import './styles.scss'
 
