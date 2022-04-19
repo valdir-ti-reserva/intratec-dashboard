@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { serverTimestamp, setDoc, doc } from "firebase/firestore"; 
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth, db } from '../../firebase';
 
 import { DriveFolderUploadOutlined } from '@mui/icons-material'
 
@@ -24,12 +27,34 @@ interface IField {
 function New({title, inputs}: INew) {
 
   const [file, setFile] = useState()
+  const [data, setData] = useState<any>({})
   
   const handleFile = (e: any) => {
-    if(!e.target.files) return
-    
-    setFile(e.target.files[0])
+    if(!e.target.files) return    
+    setFile(e.target.files[0])  
   }
+
+  const handleInput = (e: any) => {
+    const id = e.target.id
+    const value = e.target.value
+    setData({...data, [id]:value})
+  }
+
+
+  const handleAdd = async(e: any) => {
+    e.preventDefault()
+    
+    try {      
+      const res = await createUserWithEmailAndPassword(auth, data.email, data.password)
+      await setDoc(doc(db, "users", res.user.uid), {
+        ...data,
+        timestamp: serverTimestamp()
+      })
+      } catch (err) {
+      console.log('error=', err)
+    }
+  }
+
 
   return (
     <div className="new">
@@ -47,7 +72,7 @@ function New({title, inputs}: INew) {
             />
           </div>
           <div className="right">
-            <form action="">
+            <form onSubmit={handleAdd}>
               <div className="formInput">
                 <label htmlFor='file'>
                   Image: <DriveFolderUploadOutlined className='icon'/>
@@ -63,12 +88,17 @@ function New({title, inputs}: INew) {
               {inputs?.map((field: IField) => (
                 <div className="formInput" key={field.id}>
                   <label>{field.label}</label>
-                  <input type={field.type} placeholder={field.placeholder} />
+                  <input 
+                    id={String(field.id)}
+                    type={field.type} 
+                    placeholder={field.placeholder} 
+                    onChange={handleInput} 
+                  />
                 </div>
               ))}
               
               <div className="formInput">
-                <button>Send</button>
+                <button type='submit'>Send</button>
               </div>
             </form>
           </div>
