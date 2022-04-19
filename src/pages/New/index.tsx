@@ -40,7 +40,6 @@ function New({title, inputs}: INew) {
     setData({...data, [id]:value})
   }
 
-
   const handleAdd = async(e: any) => {
     e.preventDefault()
     
@@ -54,7 +53,6 @@ function New({title, inputs}: INew) {
       console.log('error=', err)
     }
   }
-
 
   return (
     <div className="new">
