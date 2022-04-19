@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 import { 
     Dashboard, 
@@ -17,12 +17,19 @@ import {
 } from '@mui/icons-material'
 
 import { DarkModeContext } from '../../context/darkmode/darkModeContext'
+import { AuthContext } from '../../context/authentication/authContext'
 
 import './styles.scss'
 
 function Sidebar() {
 
     const { dispatch } = useContext(DarkModeContext);
+    const { dispatch: AuthDispatch } = useContext(AuthContext);
+
+    const handleLogout = () => {
+        dispatch({type:"LIGHT"})
+        AuthDispatch({type:"LOGOUT"})
+    }
 
     return (
         <div className="sidebar">
@@ -93,7 +100,7 @@ function Sidebar() {
                         <PermContactCalendar className='icon' />
                         <span> Profile</span>
                     </li>
-                    <li>
+                    <li onClick={handleLogout}>
                         <Logout className='icon' />
                         <span>Logout</span>
                     </li>
