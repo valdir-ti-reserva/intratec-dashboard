@@ -1,9 +1,10 @@
-import { useState } from 'react'
-import { serverTimestamp, setDoc, doc } from "firebase/firestore"; 
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth, db } from '../../firebase';
-
+import { useEffect, useState } from 'react'
 import { DriveFolderUploadOutlined } from '@mui/icons-material'
+
+import { auth, db, storage } from '../../firebase';
+import { serverTimestamp, setDoc, doc } from "firebase/firestore"
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
 
 import { Navbar } from '../../components/Navbar'
 import { Sidebar } from '../../components/Sidebar'
@@ -26,8 +27,47 @@ interface IField {
 
 function New({title, inputs}: INew) {
 
-  const [file, setFile] = useState()
+  const [file, setFile] = useState<any>()
   const [data, setData] = useState<any>({})
+  const [percentage, setPercentage] = useState<any>(null)
+
+  useEffect(() => {
+    const uploadFile = () => {
+      const storageRef = ref(storage, file.name)
+      const uploadTask = uploadBytesResumable(storageRef, file)
+
+      uploadTask.on('state_changed',
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          setPercentage(progress)
+          console.log('Upload is ' + progress + '% done')
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused')
+              break
+            case 'running':
+              console.log('Upload is running')
+              break
+            default:
+              break
+          }
+        }, 
+        (err) => {
+          console.log('error=',err)
+        }, 
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            setData((prev: any)=>({...prev, img:downloadURL} ))
+          })
+        }
+      )
+    }
+     
+    file && uploadFile()
+
+  }, [file])
+
+  console.log('first ===> ', data)
   
   const handleFile = (e: any) => {
     if(!e.target.files) return    
@@ -96,7 +136,9 @@ function New({title, inputs}: INew) {
               ))}
               
               <div className="formInput">
-                <button type='submit'>Send</button>
+                <button 
+                  disabled={percentage !== null && percentage < 100}
+                  type='submit'>Send</button>
               </div>
             </form>
           </div>
