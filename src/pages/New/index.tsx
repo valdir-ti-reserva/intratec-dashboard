@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { DriveFolderUploadOutlined } from '@mui/icons-material'
 
-import { auth, db, storage } from '../../firebase';
-import { serverTimestamp, setDoc, doc } from "firebase/firestore"
+import { auth, db, storage } from '../../firebase'
+import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage"
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
 import { Navbar } from '../../components/Navbar'
 import { Sidebar } from '../../components/Sidebar'
@@ -14,18 +14,18 @@ import userImage from '../../assets/no_image.png'
 import './styles.scss'
 
 interface INew {
-  title: string;
-  inputs: any;
+  title: string
+  inputs: any
 }
 
 interface IField {
-  id: number;
-  label: string;
-  type: string;
-  placeholder: string;
+  id: number
+  label: string
+  type: string
+  placeholder: string
 }
 
-function New({title, inputs}: INew) {
+function New({ title, inputs }: INew) {
 
   const [file, setFile] = useState<any>()
   const [data, setData] = useState<any>({})
@@ -85,7 +85,7 @@ function New({title, inputs}: INew) {
     
     try {      
       const res = await createUserWithEmailAndPassword(auth, data.email, data.password)
-      await setDoc(doc(db, "users", res.user.uid), {
+      await setDoc(doc(db, 'users', res.user.uid), {
         ...data,
         timestamp: serverTimestamp()
       })
@@ -95,28 +95,28 @@ function New({title, inputs}: INew) {
   }
 
   return (
-    <div className="new">
+    <div className='new'>''
       <Sidebar />
-      <div className="newContainer">
+      <div className='newContainer'>''
         <Navbar />
-        <div className="top">
+        <div className='top'>''
           <h1 className='title'>{title}</h1>
         </div>
-        <div className="bottom">
-          <div className="left">
+        <div className='bottom'>''
+          <div className='left'>''
             <img 
               src={file ? URL.createObjectURL(file) : userImage}
-              alt="no" 
+              alt='no'
             />
           </div>
-          <div className="right">
+          <div className='right'>
             <form onSubmit={handleAdd}>
-              <div className="formInput">
+              <div className='formInput'>
                 <label htmlFor='file'>
                   Image: <DriveFolderUploadOutlined className='icon'/>
                 </label>
                 <input 
-                  type="file" 
+                  type='file'
                   id='file' 
                   style={{display: 'none'}} 
                   onChange={(e) => handleFile(e)}
@@ -124,7 +124,7 @@ function New({title, inputs}: INew) {
               </div>
               
               {inputs?.map((field: IField) => (
-                <div className="formInput" key={field.id}>
+                <div className='formInput' key={field.id}>
                   <label>{field.label}</label>
                   <input 
                     id={String(field.id)}
@@ -135,7 +135,7 @@ function New({title, inputs}: INew) {
                 </div>
               ))}
               
-              <div className="formInput">
+              <div className='formInput'>
                 <button 
                   disabled={percentage !== null && percentage < 100}
                   type='submit'>Send</button>
