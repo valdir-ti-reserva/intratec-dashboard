@@ -1,4 +1,6 @@
+import React from "react";
 import { useContext } from "react";
+import { Menu, MenuItem } from "@mui/material";
 import { ChatBubbleOutlineOutlined, DarkModeOutlined, FullscreenExitOutlined, LanguageOutlined, ListOutlined, NotificationsNoneOutlined, SearchOutlined, LightMode } from "@mui/icons-material"
 import { DarkModeContext } from "../../context/darkmode/darkModeContext";
 
@@ -18,6 +20,15 @@ function Navbar() {
               className="icon" 
               onClick={() => dispatch({ type: "TOGGLE" })}
             />
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);  
+  const open = Boolean(anchorEl);  
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget)
+  }  
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
 
   return (
     <div className="navbar">
@@ -53,7 +64,21 @@ function Navbar() {
               src="https://media.istockphoto.com/photos/businessman-silhouette-as-avatar-or-default-profile-picture-picture-id476085198" 
               alt="User-avatar" 
               className="avatar"
+              onClick={(e) => handleClick(e)}
             />
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={handleClose}>Logout</MenuItem>
+            </Menu>
           </div>
         </div>
       </div>
