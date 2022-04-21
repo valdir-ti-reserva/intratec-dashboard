@@ -23,11 +23,10 @@ import './styles.scss'
 
 function Sidebar() {
 
-    const { dispatch } = useContext(DarkModeContext);
+    const { dispatch: DarkDispatch } = useContext(DarkModeContext);
     const { dispatch: AuthDispatch } = useContext(AuthContext);
 
     const handleLogout = () => {
-        dispatch({type:"LIGHT"})
         AuthDispatch({type:"LOGOUT"})
     }
 
@@ -108,8 +107,8 @@ function Sidebar() {
             </div>
             <hr />
             <div className="bottom">
-                <div className="colorOption" onClick={() => dispatch({type: "LIGHT"})}></div>
-                <div className="colorOption" onClick={() => dispatch({type: "DARK"})}></div>
+                <div className="colorOption" onClick={() => DarkDispatch({type: "LIGHT"})}></div>
+                <div className="colorOption" onClick={() => DarkDispatch({type: "DARK"})}></div>
             </div>
         </div>
     )
