@@ -95,15 +95,15 @@ function New({ title, inputs }: INew) {
   }
 
   return (
-    <div className='new'>''
+    <div className='new'>
       <Sidebar />
-      <div className='newContainer'>''
+      <div className='newContainer'>
         <Navbar />
-        <div className='top'>''
+        <div className='top'>
           <h1 className='title'>{title}</h1>
         </div>
-        <div className='bottom'>''
-          <div className='left'>''
+        <div className='bottom'>
+          <div className='left'>
             <img 
               src={file ? URL.createObjectURL(file) : userImage}
               alt='no'
