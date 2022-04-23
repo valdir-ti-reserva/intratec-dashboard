@@ -1,5 +1,8 @@
-import { AccountBalanceOutlined, KeyboardArrowUp, MonetizationOnOutlined, PersonOutlineOutlined, ShoppingCartOutlined } from '@mui/icons-material'
+import { AccountBalanceOutlined, KeyboardArrowDown, KeyboardArrowUp, MonetizationOnOutlined, PersonOutlineOutlined, ShoppingCartOutlined } from '@mui/icons-material'
+import { collection, getDocs, query, where } from 'firebase/firestore'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { db } from '../../firebase'
 
 import './styles.scss'
 
@@ -7,13 +10,28 @@ interface IWidget {
   type: string
 }
 
+interface IData {
+  title: string
+  isMoney: boolean
+  link: string
+  route: string
+  query: string
+  icon: any
+}
+
 function Widget({ type }: IWidget) {
 
-  //Temporary
-  const amount = 100
-  const diff = 20
+  const [amount, setAmount] = useState(0)
+  const [diff, setDiff] = useState(0)
 
-  let data
+  let data: IData = {
+    title: '',
+    isMoney: false,
+    link: '',
+    route: '',
+    query: '',
+    icon: ''
+  }
 
   switch(type){
     case "user":
@@ -22,6 +40,7 @@ function Widget({ type }: IWidget) {
         isMoney: false,
         link: "See all users",
         route: "users",
+        query: "users",
         icon: (
           <PersonOutlineOutlined 
             className='icon' 
@@ -36,6 +55,7 @@ function Widget({ type }: IWidget) {
         isMoney: false,
         link: "See all orders",
         route: "orders",
+        query: "orders",
         icon: (
           <ShoppingCartOutlined 
             className='icon'
@@ -50,6 +70,7 @@ function Widget({ type }: IWidget) {
         isMoney: true,
         link: "View net earnings",
         route: "earnings",
+        query: "earnings",
         icon: (
           <MonetizationOnOutlined 
             className='icon'
@@ -58,12 +79,13 @@ function Widget({ type }: IWidget) {
         )
       }
     break;
-    case "balance":
+    case "products":
       data={
-        title: "Balance",
+        title: "Products",
         isMoney: true,
         link: "See details",
-        route: "balance",
+        route: "products",
+        query: "products",
         icon: (
           <AccountBalanceOutlined 
             className='icon'
@@ -76,6 +98,34 @@ function Widget({ type }: IWidget) {
         break;
   }
 
+  useEffect(() => {
+    const fetchData = async() => {
+      const today = new Date()
+      const lastMonth = new Date(new Date().setMonth(today.getMonth() - 1))
+      const prevMonth = new Date(new Date().setMonth(today.getMonth() - 2))
+    
+      const lastMonthQuery = query(
+        collection(db, data.query),
+        where("timestamp", "<=", today),
+        where("timestamp", ">", lastMonth)
+      )
+      const prevMonthQuery = query(
+        collection(db, data.query),
+        where("timestamp", "<=", lastMonth),
+        where("timestamp", ">", prevMonth)
+      )
+
+      const lastMonthData = await getDocs(lastMonthQuery)
+      const prevMonthData = await getDocs(prevMonthQuery)
+
+      setAmount(lastMonthData.docs.length)
+      setDiff((lastMonthData.docs.length - prevMonthData.docs.length) / (prevMonthData.docs.length) * 100)
+
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <div className='widget'>
       <div className="left">
@@ -86,11 +136,11 @@ function Widget({ type }: IWidget) {
         </Link>
       </div>
       <div className="right">
-        <div className="percentage positive">
-          <KeyboardArrowUp />
-          {diff} %</div>
-        {data?.icon}
-      </div>
+        <div className={`percentage ${diff < 0 ? 'negative' : 'positive'}`}>
+          {diff < 0 ? <KeyboardArrowDown /> : <KeyboardArrowUp />}
+          {diff !== Infinity && diff ? diff : 0} %</div>
+          {data?.icon}
+        </div>
     </div>
   )
 }
