@@ -124,7 +124,7 @@ function Widget({ type }: IWidget) {
     }
 
     fetchData()
-  }, [])
+  }, [data.query])
 
   return (
     <div className='widget'>
