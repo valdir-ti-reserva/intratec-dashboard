@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { DriveFolderUploadOutlined } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
 
 import { auth, db, storage } from '../../firebase'
 import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
@@ -30,6 +31,7 @@ function New({ title, inputs }: INew) {
   const [file, setFile] = useState<any>()
   const [data, setData] = useState<any>({})
   const [percentage, setPercentage] = useState<any>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const uploadFile = () => {
@@ -66,8 +68,6 @@ function New({ title, inputs }: INew) {
     file && uploadFile()
 
   }, [file])
-
-  console.log('first ===> ', data)
   
   const handleFile = (e: any) => {
     if(!e.target.files) return    
@@ -89,7 +89,8 @@ function New({ title, inputs }: INew) {
         ...data,
         timestamp: serverTimestamp()
       })
-      } catch (err) {
+      navigate(-1)
+    } catch (err) {
       console.log('error=', err)
     }
   }
