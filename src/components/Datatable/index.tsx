@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import { Link } from 'react-router-dom'
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../firebase'
 
 import { userColumns } from '../../datatablesource'
@@ -10,7 +10,7 @@ import './styles.scss'
 
 function Datatable() {
 
-    const [data, setData] = useState([])
+    const [data, setData] = useState<any[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,9 +27,14 @@ function Datatable() {
         }
         fetchData()
     }, [])
-
-    const handleDelete = (id: number) => {
-        // setData(data.filter(item => item.id !== id))
+    
+    const handleDelete = async (id: string) => {
+        try {
+            await deleteDoc(doc(db, "users", id));
+            setData(data.filter(item => item.id !== id))
+        } catch (err) {
+            console.log('Error=', err);            
+        }
     }
 
     const actionColumn = [
