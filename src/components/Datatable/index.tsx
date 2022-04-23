@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
 import { Link } from 'react-router-dom'
-import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from '../../firebase'
 
 import { userColumns } from '../../datatablesource'
@@ -13,19 +13,21 @@ function Datatable() {
     const [data, setData] = useState<any[]>([])
 
     useEffect(() => {
-        const fetchData = async () => {
-            let list: any = []
-            try {
-                const querySnapshot = await getDocs(collection(db, "users"));
-                querySnapshot.forEach((doc) => {
+        //Listen (REALTIME)
+        const unsub = onSnapshot(
+            collection(db, "users"), 
+            (snapshot) => {
+                let list: any = []
+                snapshot.docs.forEach(doc => {
                     list.push({ id: doc.id, ...doc.data() })
-                });
-                setData(list)
-            } catch (err) {
-                console.log('Error=', err);
-            }
+                })
+            setData(list)
+            }, (err) => {
+                console.log('Error=', err)
+            })
+        return () => {
+            unsub()
         }
-        fetchData()
     }, [])
     
     const handleDelete = async (id: string) => {
