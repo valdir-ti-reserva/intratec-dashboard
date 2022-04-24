@@ -1,11 +1,12 @@
 import { useContext } from 'react'
 import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 
+import { New } from './pages/New'
 import { Home } from './pages/Home'
 import { List } from './pages/List'
 import { Login } from './pages/Login'
-import { New } from './pages/New'
 import { Single } from './pages/Single'
+import { NotFound } from './components/NotFound'
 import { userInputs, productInputs } from './formSource'
 
 import { DarkModeContext } from './context/darkmode/darkModeContext'
@@ -94,6 +95,7 @@ function App() {
               />
             </Route>
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </div>
