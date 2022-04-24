@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DataGrid } from '@mui/x-data-grid'
+import { useConfirm } from 'material-ui-confirm'
 
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from '../../firebase'
@@ -12,6 +13,7 @@ import './styles.scss'
 function Datatable() {
 
     const [data, setData] = useState<any[]>([])
+    const confirm = useConfirm()
 
     useEffect(() => {
         //Listen (REALTIME)
@@ -32,12 +34,30 @@ function Datatable() {
     }, [])
     
     const handleDelete = async (id: string) => {
-        try {
-            await deleteDoc(doc(db, "users", id));
+
+        confirm({
+            title: 'Atenção', 
+            description: 'Deseja realmente excluir esse item?', 
+            confirmationText: 'Sim', 
+            cancellationText: 'Não',
+            cancellationButtonProps: {
+                style: {
+                  background: '#ff000091',
+                  color: 'white',
+                  fontWeight: 'bold'
+                }
+              },
+              confirmationButtonProps: {
+                style: {
+                  background: '#008000cc',
+                  color: 'white',
+                  fontWeight: 'bold'
+                }
+              }
+        }).then(async () => {
+            deleteDoc(doc(db, "users", id));
             setData(data.filter(item => item.id !== id))
-        } catch (err) {
-            console.log('Error=', err);            
-        }
+        }).catch(() => console.log("Operação cancelada pelo usuário."))
     }
 
     const actionColumn = [
