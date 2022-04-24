@@ -34,7 +34,6 @@ function Datatable() {
     }, [])
     
     const handleDelete = async (id: string) => {
-
         confirm({
             title: 'Atenção', 
             description: 'Deseja realmente excluir esse item?', 

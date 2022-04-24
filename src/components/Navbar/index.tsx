@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import { ChatBubbleOutlineOutlined, DarkModeOutlined, FullscreenExitOutlined, LanguageOutlined, ListOutlined, NotificationsNoneOutlined, SearchOutlined, LightMode, PersonAdd, Settings, Logout } from "@mui/icons-material"
+import { useConfirm } from 'material-ui-confirm'
 
 import { DarkModeContext } from "../../context/darkmode/darkModeContext";
 import { AuthContext } from "../../context/authentication/authContext";
@@ -11,6 +12,7 @@ function Navbar() {
 
   const { darkMode, dispatch } = useContext(DarkModeContext);
   const { dispatch: AuthDispatch } = useContext(AuthContext);  
+  const confirm = useConfirm()
 
   const darkModeIcon = darkMode ? 
             <LightMode 
@@ -32,7 +34,28 @@ function Navbar() {
     setAnchorEl(null)
   }
   const handleLogout = () => {
-    AuthDispatch({type:"LOGOUT"})
+      confirm({
+        title: 'Atenção', 
+        description: 'Deseja realmente sair?',
+        confirmationText: 'Sim', 
+        cancellationText: 'Não',
+        cancellationButtonProps: {
+            style: {
+              background: '#ff000091',
+              color: 'white',
+              fontWeight: 'bold'
+            }
+          },
+          confirmationButtonProps: {
+            style: {
+              background: '#008000cc',
+              color: 'white',
+              fontWeight: 'bold'
+            }
+          }
+      }).then(async () => {
+          AuthDispatch({type:"LOGOUT"})
+      }).catch(() => console.log("Operação cancelada pelo usuário."))
   }
 
   return (
