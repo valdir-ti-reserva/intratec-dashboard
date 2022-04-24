@@ -1,9 +1,10 @@
-import { Chart } from '../../components/Chart'
-import { FeaturedChart } from '../../components/FeaturedChart'
-import { Navbar } from '../../components/Navbar'
-import { Sidebar } from '../../components/Sidebar'
 import { List } from '../../components/Table'
+import { Chart } from '../../components/Chart'
+import { Navbar } from '../../components/Navbar'
 import { Widget } from '../../components/Widget'
+import { Sidebar } from '../../components/Sidebar'
+import { FeaturedChart } from '../../components/FeaturedChart'
+
 import './styles.scss'
 
 function Home() {

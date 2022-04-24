@@ -1,7 +1,8 @@
-import { AccountBalanceOutlined, KeyboardArrowDown, KeyboardArrowUp, MonetizationOnOutlined, PersonOutlineOutlined, ShoppingCartOutlined } from '@mui/icons-material'
-import { collection, getDocs, query, where } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { AccountBalanceOutlined, KeyboardArrowDown, KeyboardArrowUp, MonetizationOnOutlined, PersonOutlineOutlined, ShoppingCartOutlined } from '@mui/icons-material'
+
+import { collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../../firebase'
 
 import './styles.scss'
@@ -82,7 +83,7 @@ function Widget({ type }: IWidget) {
     case "products":
       data={
         title: "Products",
-        isMoney: true,
+        isMoney: false,
         link: "See details",
         route: "products",
         query: "products",

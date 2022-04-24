@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { DataGrid } from '@mui/x-data-grid'
 import { Link } from 'react-router-dom'
+import { DataGrid } from '@mui/x-data-grid'
+
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from '../../firebase'
 

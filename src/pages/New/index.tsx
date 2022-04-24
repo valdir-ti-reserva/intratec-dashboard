@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import { DriveFolderUploadOutlined } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
+import { DriveFolderUploadOutlined } from '@mui/icons-material'
 
 import { auth, db, storage } from '../../firebase'
-import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
 import { Navbar } from '../../components/Navbar'

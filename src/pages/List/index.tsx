@@ -1,6 +1,6 @@
-import { Datatable } from "../../components/Datatable"
 import { Navbar } from "../../components/Navbar"
 import { Sidebar } from "../../components/Sidebar"
+import { Datatable } from "../../components/Datatable"
 
 import './styles.scss'
 

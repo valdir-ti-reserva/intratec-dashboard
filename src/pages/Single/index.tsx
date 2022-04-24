@@ -1,7 +1,8 @@
+import { List } from '../../components/Table'
 import { Chart } from '../../components/Chart'
 import { Navbar } from '../../components/Navbar'
 import { Sidebar } from '../../components/Sidebar'
-import { List } from '../../components/Table'
+
 import './styles.scss'
 
 function Single() {
