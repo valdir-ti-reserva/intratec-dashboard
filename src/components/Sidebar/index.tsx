@@ -1,18 +1,29 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { 
-    Dashboard, 
-    PersonOutline, 
-    Store, 
-    CreditCard, 
-    LocalShipping, 
-    QueryStats, 
+import {
+    Dashboard,
+    PersonOutline,
+    Store,
+    CreditCard,
+    LocalShipping,
+    QueryStats,
     NotificationsNone,
     CloudCircle,
-    Psychology, 
+    Psychology,
     Settings,
     PermContactCalendar,
-    Logout
+    Logout,
+    ExpandLess,
+    ExpandMore,
+    ChildCare,
+    AtmOutlined,
+    SchoolOutlined,
+    SettingsSuggestOutlined,
+    QueryStatsOutlined,
+    PlaylistAddOutlined,
+    PersonOutlined,
+    AccountBalance,
+    AccountBalanceWallet
 } from '@mui/icons-material'
 import { useConfirm } from 'material-ui-confirm'
 
@@ -20,6 +31,7 @@ import { DarkModeContext } from '../../context/darkmode/darkModeContext'
 import { AuthContext } from '../../context/authentication/authContext'
 
 import './styles.scss'
+import { Collapse, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core'
 
 function Sidebar() {
 
@@ -30,9 +42,9 @@ function Sidebar() {
 
     const handleLogout = () => {
         confirm({
-            title: 'Atenção', 
+            title: 'Atenção',
             description: 'Deseja realmente sair?',
-            confirmationText: 'Sim', 
+            confirmationText: 'Sim',
             cancellationText: 'Não',
             cancellationButtonProps: {
                 style: {
@@ -53,6 +65,36 @@ function Sidebar() {
         }).catch(() => console.log("Operação cancelada pelo usuário."))
     }
 
+    const [openAtm , setOpenAtm] = useState(false)
+    const [openPizza , setOpenPizza] = useState(false)
+    const [openUser , setOpenUser] = useState(false)
+    const [openUseful , setOpenUseful] = useState(false)
+    const [openSettings , setOpenSettings] = useState(false)
+    const [openList , setOpenList] = useState(false)
+
+    const handleClick = (key: string) => {
+        switch (key) {
+            case 'list':
+                setOpenList(!openList)
+                break;
+            case 'system':
+                setOpenSettings(!openSettings)
+                break;
+            case 'useful':
+                setOpenUseful(!openUseful)
+                break;
+            case 'user':
+                setOpenUser(!openUser)
+                break;
+            case 'atm':
+                setOpenAtm(!openAtm)
+                break;
+            case 'pizza':
+                setOpenPizza(!openPizza)
+                break;
+        }
+    }
+
     return (
         <div className="sidebar">
             <div className="top">
@@ -62,71 +104,230 @@ function Sidebar() {
             </div>
             <hr />
             <div className="center">
-                <ul>
-                    <p className="title">MAIN</p>
-                    <Link to="/" style={{textDecoration: 'none'}}>
-                        <li>
-                            <Dashboard className='icon' />
-                            <span>Dashboard</span>
-                        </li>
-                    </Link>
-                    <hr />
-                    <p className="title">LISTS</p>
-                    <Link to="/users" style={{textDecoration: 'none'}}>
-                        <li>
-                            <PersonOutline className='icon' />
-                            <span>Users</span>
-                        </li>
-                    </Link>
-                    <Link to="/products" style={{textDecoration: 'none'}}>
-                        <li>
-                            <Store className='icon' />
-                            <span>Products</span>
-                        </li>
-                    </Link>
-                    <li>
-                        <CreditCard className='icon' />
-                        <span>Orders</span>
-                    </li>
-                    <li>
-                        <LocalShipping className='icon' />
-                        <span>Delivery</span>
-                    </li>
-                    <hr />
-                    <p className="title">USEFUL</p>
-                    <li>
-                        <QueryStats className='icon' />
-                        <span>Stats</span>
-                    </li>
-                    <li>
-                        <NotificationsNone className='icon' />
-                        <span>Notifications</span>
-                    </li>
-                    <hr />
-                    <p className="title">SERVICE</p>
-                    <li>
-                        <CloudCircle className='icon' />
-                        <span>System Health</span>
-                    </li>
-                    <li>
-                        <Psychology className='icon' />
-                        <span>Logs</span>
-                    </li>
-                    <li>
-                        <Settings className='icon' />
-                        <span>Settings</span>
-                    </li>
-                    <hr />
-                    <p className="title">USER</p>
-                    <li>
-                        <PermContactCalendar className='icon' />
-                        <span> Profile</span>
-                    </li>
-                    <li onClick={handleLogout}>
-                        <Logout className='icon' />
-                        <span>Logout</span>
-                    </li>
-                </ul>
+                <List
+                    className='nav'
+                    component="nav"
+                    subheader={
+                        <ListSubheader component="div" className='title'>MAIN</ListSubheader>
+                    }
+                >
+                   <ListItem button component={props => <Link {...props} to="/" />} className='item-title'>
+                        <ListItemIcon>
+                            <Dashboard className='icon-title' />
+                        </ListItemIcon>
+                        <ListItemText inset primary='Dashboard' className='text-title' />
+                    </ListItem>
+                </List>
+                <hr />
+                <List
+                    className='nav'
+                    component="nav"
+                    subheader={
+                        <ListSubheader component="div" className='title'>PROJECTS</ListSubheader>
+                    }
+                >
+                    {/* LISTS */}
+                    <ListItem button onClick={() => handleClick('list')} className='item-title'>
+                        <ListItemIcon>
+                            <PlaylistAddOutlined className='icon-title' />
+                        </ListItemIcon>
+                        <ListItemText inset primary='LISTS' className='text-title' />
+                        {openList ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openList} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItem component={props => <Link {...props} to="/users" />} button className='subitem'>
+                                <ListItemIcon>
+                                    <PersonOutlined className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Users' className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem component={props => <Link {...props} to="/products" />} button className='subitem'>
+                                <ListItemIcon>
+                                    <Store className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Products' className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem component={props => <Link {...props} to="/orders" />} button className='subitem'>
+                                <ListItemIcon>
+                                    <CreditCard className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Orders' className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem component={props => <Link {...props} to="/delivery" />} button className='subitem'>
+                                <ListItemIcon>
+                                    <LocalShipping className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Delivery' className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                    </Collapse>
+
+                    {/* USER ADMIN */}
+                    <ListItem button onClick={() => handleClick('user')} className='item-title'>
+                        <ListItemIcon>
+                            <PersonOutline className='icon-title' />
+                        </ListItemIcon>
+                        <ListItemText inset primary='USER ADMIN' className='text-title' />
+                        {openUser ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openUser} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItem component={props => <Link {...props} to="/profile" />} button className='subitem'>
+                                <ListItemIcon>
+                                    <PermContactCalendar className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Profile' className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                    </Collapse>
+
+                    {/* USERFUL */}
+                    <ListItem button onClick={() => handleClick('useful')} className='item-title'>
+                        <ListItemIcon>
+                            <QueryStatsOutlined className='icon-title' />
+                        </ListItemIcon>
+                        <ListItemText inset primary='USEFUL' className='text-title' />
+                        {openUseful ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openUseful} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItem component={props => <Link {...props} to="/stats" />} button className='subitem'>
+                                <ListItemIcon>
+                                    <QueryStats className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Stats' className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem button className='subitem' component={props => <Link {...props} to="/notifications" />}>
+                                <ListItemIcon className='icon'>
+                                    <NotificationsNone className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Notifications'  className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                    </Collapse>
+
+                    {/* SETTINGS */}
+                    <ListItem button onClick={() => handleClick('system')} className='item-title'>
+                        <ListItemIcon>
+                            <SettingsSuggestOutlined className='icon-title' />
+                        </ListItemIcon>
+                        <ListItemText inset primary='SYSTEM' className='text-title' />
+                        {openSettings ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openSettings} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItem component={props => <Link {...props} to="/health" />} button className='subitem'>
+                                <ListItemIcon>
+                                    <CloudCircle className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='System Health' className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem button className='subitem'  component={props => <Link {...props} to="/logs" />}>
+                                <ListItemIcon className='icon'>
+                                    <Psychology className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Logs'  className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem button className='subitem'  component={props => <Link {...props} to="/settings" />}>
+                                <ListItemIcon className='icon'>
+                                    <Settings className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Settings'  className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                    </Collapse>
+
+                    {/* ATM */}
+                    <ListItem button onClick={() => handleClick('atm')} className='item-title'>
+                        <ListItemIcon>
+                            <AtmOutlined className='icon-title' />
+                        </ListItemIcon>
+                        <ListItemText inset primary='ATM' className='text-title' />
+                        {openAtm ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openAtm} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItem component={props => <Link {...props} to="/banks" />} button className='subitem'>
+                                <ListItemIcon>
+                                    <AccountBalance className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Banks' className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem button className='subitem' component={props => <Link {...props} to="/account" />}>
+                                <ListItemIcon className='icon'>
+                                    <AccountBalanceWallet className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='Accounts'  className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                    </Collapse>
+
+                    {/* PIZZA */}
+                    <ListItem button onClick={() => handleClick('pizza')} className='item-title'>
+                        <ListItemIcon>
+                            <SchoolOutlined className='icon-title' />
+                        </ListItemIcon>
+                        <ListItemText inset primary='DEFAULT' className='text-title'/>
+                        {openPizza ? <ExpandLess /> : <ExpandMore />}
+                    </ListItem>
+                    <Collapse in={openPizza} timeout="auto" unmountOnExit>
+                        <List component="div" disablePadding>
+                            <ListItem button className='subitem'>
+                                <ListItemIcon>
+                                    <ChildCare className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='users'  className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem button className='subitem'>
+                                <ListItemIcon>
+                                    <Psychology className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='products'  className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem button className='subitem'>
+                                <ListItemIcon>
+                                    <Settings className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='orders'  className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                        <List component="div" disablePadding>
+                            <ListItem button className='subitem'>
+                                <ListItemIcon>
+                                    <Psychology className='icon-subitem'/>
+                                </ListItemIcon>
+                                <ListItemText inset primary='delivery'  className='text-subitem'/>
+                            </ListItem>
+                        </List>
+                    </Collapse>
+
+                    <ListItem button onClick={() => handleLogout()} className='item-title'>
+                        <ListItemIcon>
+                            <Logout className='icon-title' />
+                        </ListItemIcon>
+                        <ListItemText inset primary='Logout' className='text-title'/>
+                    </ListItem>
+
+                </List>
             </div>
             <hr />
             <div className="bottom">
