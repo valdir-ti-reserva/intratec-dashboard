@@ -16,10 +16,10 @@ function Single() {
             <div className="editButton">Edit</div>
             <h1 className="title">Information</h1>
             <div className="item">
-              <img 
-                src="https://media.istockphoto.com/photos/businessman-silhouette-as-avatar-or-default-profile-picture-picture-id476085198" 
+              <img
+                src="https://media.istockphoto.com/photos/businessman-silhouette-as-avatar-or-default-profile-picture-picture-id476085198"
                 alt="user avatar"
-                className="itemImg" 
+                className="itemImg"
               />
               <div className="details">
                 <h1 className="itemTitle">John Doe</h1>

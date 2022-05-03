@@ -7,7 +7,8 @@ import { List } from './pages/List'
 import { Login } from './pages/Login'
 import { Single } from './pages/Single'
 import { NotFound } from './components/NotFound'
-import { userInputs, productInputs } from './formSource'
+import { userInputs, todoInputs } from './formSource'
+import { todoColumns, userColumns } from './datatablesource'
 
 import { DarkModeContext } from './context/darkmode/darkModeContext'
 import { AuthContext } from './context/authentication/authContext'
@@ -28,14 +29,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
-            <Route 
-              path="login" 
+            <Route
+              path="login"
               element={
                 <Login />
               }
             />
-            <Route 
-              index 
+            <Route
+              index
               element={
                 <RequireAuth>
                   <Home />
@@ -43,57 +44,59 @@ function App() {
               }
             />
             <Route path="users">
-              <Route 
-                index 
+              <Route
+                index
                 element={
                   <RequireAuth>
-                    <List />
+                    <List columns={userColumns}  title="Users" path="users"/>
                   </RequireAuth>
                 }
               />
-              <Route 
-                path=':userId' 
-                element={
-                  <RequireAuth>
-                    <Single />
-                  </RequireAuth>
-                }
-              />
-              <Route 
-                path='new' 
-                element={
-                  <RequireAuth>
-                    <New title="Add new User" inputs={userInputs} />
-                  </RequireAuth>
-                }
-              />
-            </Route>
-            <Route path="products">
-              <Route 
-                index 
-                element={
-                  <RequireAuth>
-                    <List />
-                  </RequireAuth>
-                }
-              />
-              <Route 
-                path=':productId' 
+              <Route
+                path=':userId'
                 element={
                   <RequireAuth>
                     <Single />
                   </RequireAuth>
                 }
               />
-              <Route 
-                path='new' 
+              <Route
+                path='new'
                 element={
                   <RequireAuth>
-                    <New title="Add new Product" inputs={productInputs} />
+                    <New title="Add new User" inputs={userInputs} path="users"/>
                   </RequireAuth>
                 }
               />
             </Route>
+
+            <Route path="todos">
+              <Route
+                index
+                element={
+                  <RequireAuth>
+                    <List columns={todoColumns}  title="Todo" path="todos" />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path=':todoId'
+                element={
+                  <RequireAuth>
+                    <Single />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path='new'
+                element={
+                  <RequireAuth>
+                    <New title="Add new Todo" inputs={todoInputs} path="todos" />
+                  </RequireAuth>
+                }
+              />
+            </Route>
+
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

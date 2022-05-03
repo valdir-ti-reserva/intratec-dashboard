@@ -2,7 +2,7 @@
     height: 600px;
     width: 100%;
     padding: 20px;
-    
+
     &:focus{
         outline: none;
     }
@@ -15,7 +15,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        color: gray; 
+        color: gray;
 
         .link {
             text-decoration: none;
@@ -50,7 +50,7 @@
             color: green;
             background-color: rgb(124, 212, 124);
         }
-        
+
         &.pending {
             color: goldenrod;
             background-color: rgba(255, 255, 0, 0.308);
@@ -81,6 +81,15 @@
             color: crimson;
             border: 1px dotted rgba(220, 20, 60, 0.425);
             cursor: pointer;
+        }
+    }
+
+    .datagrid {
+        .todoStatus-false{
+            color: red
+        }
+        .todoStatus-true{
+            color: blue
         }
     }
 }

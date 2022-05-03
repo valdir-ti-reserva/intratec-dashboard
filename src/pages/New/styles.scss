@@ -6,12 +6,12 @@
         flex: 6;
 
         .top, .bottom {
-            -webkit-box-shadow: 3px 1px 13px -4px rgba(0,0,0,0.76); 
+            -webkit-box-shadow: 3px 1px 13px -4px rgba(0,0,0,0.76);
             box-shadow: 3px 1px 13px -4px rgba(0,0,0,0.76);
             padding: 20px;
             margin: 20px;
             display: flex;
-            
+
             .title {
                 color: lightgray;
             }
@@ -27,7 +27,7 @@
                     object-fit: cover;
                 }
             }
-    
+
             .right {
                 flex: 2;
 
@@ -56,7 +56,7 @@
                             border: 0;
                             border-bottom: 1px solid gray;
                         }
-                        
+
                         button {
                             width: 150px;
                             padding: 10px;
@@ -79,6 +79,6 @@
             }
         }
 
-            
+
     }
 }

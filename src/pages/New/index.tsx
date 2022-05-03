@@ -4,7 +4,7 @@ import { DriveFolderUploadOutlined } from '@mui/icons-material'
 
 import { auth, db, storage } from '../../firebase'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { serverTimestamp, setDoc, doc } from 'firebase/firestore'
+import { serverTimestamp, setDoc, doc, addDoc, collection } from 'firebase/firestore'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
 import { Navbar } from '../../components/Navbar'
@@ -17,6 +17,7 @@ import './styles.scss'
 interface INew {
   title: string
   inputs: any
+  path: string
 }
 
 interface IField {
@@ -24,9 +25,10 @@ interface IField {
   label: string
   type: string
   placeholder: string
+  name?: string
 }
 
-function New({ title, inputs }: INew) {
+function New({ title, inputs, path }: INew) {
 
   const [file, setFile] = useState<any>()
   const [data, setData] = useState<any>({})
@@ -53,10 +55,10 @@ function New({ title, inputs }: INew) {
             default:
               break
           }
-        }, 
+        },
         (err) => {
           console.log('error=',err)
-        }, 
+        },
         () => {
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setData((prev: any)=>({...prev, img:downloadURL} ))
@@ -64,14 +66,14 @@ function New({ title, inputs }: INew) {
         }
       )
     }
-     
+
     file && uploadFile()
 
   }, [file])
-  
+
   const handleFile = (e: any) => {
-    if(!e.target.files) return    
-    setFile(e.target.files[0])  
+    if(!e.target.files) return
+    setFile(e.target.files[0])
   }
 
   const handleInput = (e: any) => {
@@ -82,13 +84,26 @@ function New({ title, inputs }: INew) {
 
   const handleAdd = async(e: any) => {
     e.preventDefault()
-    
-    try {      
-      const res = await createUserWithEmailAndPassword(auth, data.email, data.password)
-      await setDoc(doc(db, 'users', res.user.uid), {
-        ...data,
-        timestamp: serverTimestamp()
-      })
+
+    try {
+      if(path === 'users'){
+        const res = await createUserWithEmailAndPassword(auth, data.email, data.password)
+        await setDoc(doc(db, 'users', res.user.uid), {
+          ...data,
+          timestamp: serverTimestamp()
+        })
+      }
+
+      if(path === 'todos'){
+        if(data.name){
+          await addDoc(collection(db, 'todos'), {
+            name: data.name,
+            status: data.status === 'complete' ? true : false,
+            timestamp: serverTimestamp()
+          })
+        }
+      }
+
       navigate(-1)
     } catch (err) {
       console.log('error=', err)
@@ -104,40 +119,54 @@ function New({ title, inputs }: INew) {
           <h1 className='title'>{title}</h1>
         </div>
         <div className='bottom'>
-          <div className='left'>
-            <img 
-              src={file ? URL.createObjectURL(file) : userImage}
-              alt='no'
-            />
-          </div>
+          {path === 'users' &&
+            <div className='left'>
+              <img
+                src={file ? URL.createObjectURL(file) : userImage}
+                alt='no'
+                />
+            </div>
+          }
           <div className='right'>
             <form onSubmit={handleAdd}>
-              <div className='formInput'>
-                <label htmlFor='file'>
-                  Image: <DriveFolderUploadOutlined className='icon'/>
-                </label>
-                <input 
-                  type='file'
-                  id='file' 
-                  style={{display: 'none'}} 
-                  onChange={(e) => handleFile(e)}
-                />
-              </div>
-              
+              {path === 'users' &&
+                <div className='formInput'>
+                  <label htmlFor='file'>
+                    Image: <DriveFolderUploadOutlined className='icon'/>
+                  </label>
+                  <input
+                    type='file'
+                    id='file'
+                    style={{display: 'none'}}
+                    onChange={(e) => handleFile(e)}
+                    />
+                </div>
+              }
+
               {inputs?.map((field: IField) => (
                 <div className='formInput' key={field.id}>
-                  <label>{field.label}</label>
-                  <input 
-                    id={String(field.id)}
-                    type={field.type} 
-                    placeholder={field.placeholder} 
-                    onChange={handleInput} 
-                  />
+                  <label htmlFor={String(field.id)}>{field.label}</label>
+                  {field.type === 'option' ?
+                    <select id={String(field.id)} onChange={handleInput}>
+                      <option value="">--Please choose an option--</option>
+                      <option value="complete">Complete</option>
+                      <option value="incomplete">Incomplete</option>
+                    </select>
+                    :
+                    <input
+                      id={String(field.id)}
+                      type={field.type}
+                      placeholder={field.placeholder}
+                      name={field.name}
+                      onChange={handleInput}
+                    />
+                  }
+
                 </div>
               ))}
-              
+
               <div className='formInput'>
-                <button 
+                <button
                   disabled={percentage !== null && percentage < 100}
                   type='submit'>Send</button>
               </div>

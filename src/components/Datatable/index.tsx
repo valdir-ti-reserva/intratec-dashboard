@@ -6,11 +6,9 @@ import { useConfirm } from 'material-ui-confirm'
 import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import { db } from '../../firebase'
 
-import { userColumns } from '../../datatablesource'
-
 import './styles.scss'
 
-function Datatable() {
+function Datatable({ columns, title, path }: any) {
 
     const [data, setData] = useState<any[]>([])
     const confirm = useConfirm()
@@ -18,7 +16,7 @@ function Datatable() {
     useEffect(() => {
         //Listen (REALTIME)
         const unsub = onSnapshot(
-            collection(db, "users"), 
+            collection(db, path),
             (snapshot) => {
                 let list: any = []
                 snapshot.docs.forEach(doc => {
@@ -32,12 +30,12 @@ function Datatable() {
             unsub()
         }
     }, [])
-    
+
     const handleDelete = async (id: string) => {
         confirm({
-            title: 'Atenção', 
-            description: 'Deseja realmente excluir esse item?', 
-            confirmationText: 'Sim', 
+            title: 'Atenção',
+            description: 'Deseja realmente excluir esse item?',
+            confirmationText: 'Sim',
             cancellationText: 'Não',
             cancellationButtonProps: {
                 style: {
@@ -54,41 +52,41 @@ function Datatable() {
                 }
               }
         }).then(async () => {
-            deleteDoc(doc(db, "users", id));
+            deleteDoc(doc(db, path, id));
             setData(data.filter(item => item.id !== id))
         }).catch(() => console.log("Operação cancelada pelo usuário."))
     }
 
     const actionColumn = [
         {
-            field: 'action', 
-            headerName: 'Action', 
-            width: 200, 
+            field: 'action',
+            headerName: 'Action',
+            width: 200,
             renderCell: (params: any) => {
                 return (
                     <div className="cellAction">
-                        <Link to="/users/test" style={{textDecoration: 'none'}}>
+                        <Link to={`/${path}/${params.row.id}`} style={{textDecoration: 'none'}}>
                             <div className="viewButton">View</div>
                         </Link>
                         <div className="deleteButton" onClick={() => handleDelete(params.row.id)}>Delete</div>
                     </div>
                 )
             }
-        } 
+        }
     ]
 
   return (
     <div className="datatable">
         <div className="dataTableTitle">
-            Add new User
-            <Link to="/users/new" className="link">
+            {title}
+            <Link to={`/${path}/new`} className="link">
                 Add new
             </Link>
         </div>
         <DataGrid
             className='datagrid'
             rows={data}
-            columns={userColumns.concat(actionColumn)}
+            columns={columns.concat(actionColumn)}
             pageSize={8}
             rowsPerPageOptions={[8]}
             checkboxSelection

@@ -142,11 +142,11 @@ function Sidebar() {
                             </ListItem>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItem component={props => <Link {...props} to="/todo" />} button className='subitem'>
+                            <ListItem component={props => <Link {...props} to="/todos" />} button className='subitem'>
                                 <ListItemIcon>
                                     <ListAlt className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='To do' className='text-subitem'/>
+                                <ListItemText inset primary='Todo' className='text-subitem'/>
                             </ListItem>
                         </List>
                     </Collapse>

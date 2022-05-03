@@ -1,7 +1,7 @@
 import NoAvatar from './assets/no_avatar.png'
 
 export const userColumns = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "id", headerName: "ID", width: 300 },
     {
       field: "displayname",
       headerName: "Full Name",
@@ -31,11 +31,39 @@ export const userColumns = [
       field: "email",
       headerName: "Email",
       width: 230,
-    },  
+    },
     {
       field: "country",
       headerName: "Country",
       width: 100,
     },
   ];
-  
+
+
+export const todoColumns = [
+    { field: "id", headerName: "ID", width: 300 },
+    {
+      field: "todo",
+      headerName: "Name",
+      width: 160,
+      renderCell: (params) => {
+        return (
+          <div className={`cellWithStatus ${params.row.name}`}>
+            {params.row.name}
+          </div>
+        );
+      },
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 230,
+      renderCell: (params) => {
+        return (
+          <div className={`todoStatus-${params.row.status}`}>
+            {!params.row.status ? 'Incomplete' : 'Complete'}
+          </div>
+        );
+      },
+    }
+  ];
