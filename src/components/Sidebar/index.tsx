@@ -3,35 +3,26 @@ import { Link } from 'react-router-dom'
 import {
     Dashboard,
     PersonOutline,
-    Store,
-    CreditCard,
-    LocalShipping,
-    QueryStats,
-    NotificationsNone,
-    CloudCircle,
-    Psychology,
-    Settings,
-    PermContactCalendar,
     Logout,
     ExpandLess,
     ExpandMore,
-    ChildCare,
     AtmOutlined,
-    SchoolOutlined,
-    SettingsSuggestOutlined,
-    QueryStatsOutlined,
     PlaylistAddOutlined,
     PersonOutlined,
     AccountBalance,
-    AccountBalanceWallet
+    AccountBalanceWallet,
+    CurrencyExchange,
+    ViewModuleSharp,
+    FactorySharp,
+    ListAlt
 } from '@mui/icons-material'
+import { Collapse, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core'
 import { useConfirm } from 'material-ui-confirm'
 
 import { DarkModeContext } from '../../context/darkmode/darkModeContext'
 import { AuthContext } from '../../context/authentication/authContext'
 
 import './styles.scss'
-import { Collapse, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core'
 
 function Sidebar() {
 
@@ -65,32 +56,23 @@ function Sidebar() {
         }).catch(() => console.log("Operação cancelada pelo usuário."))
     }
 
-    const [openAtm , setOpenAtm] = useState(false)
-    const [openPizza , setOpenPizza] = useState(false)
-    const [openUser , setOpenUser] = useState(false)
-    const [openUseful , setOpenUseful] = useState(false)
-    const [openSettings , setOpenSettings] = useState(false)
     const [openList , setOpenList] = useState(false)
+    const [openAtm , setOpenAtm] = useState(false)
+    const [openDefault , setOpenDefault] = useState(false)
 
     const handleClick = (key: string) => {
         switch (key) {
             case 'list':
+                localStorage.setItem("menu-open", JSON.stringify(!openList ? key : ''))
                 setOpenList(!openList)
                 break;
-            case 'system':
-                setOpenSettings(!openSettings)
-                break;
-            case 'useful':
-                setOpenUseful(!openUseful)
-                break;
-            case 'user':
-                setOpenUser(!openUser)
-                break;
             case 'atm':
+                localStorage.setItem("menu-open", JSON.stringify(!openAtm ? key : ''))
                 setOpenAtm(!openAtm)
                 break;
-            case 'pizza':
-                setOpenPizza(!openPizza)
+            case 'default':
+                localStorage.setItem("menu-open", JSON.stringify(!openDefault ? key : ''))
+                setOpenDefault(!openDefault)
                 break;
         }
     }
@@ -115,7 +97,7 @@ function Sidebar() {
                         <ListItemIcon>
                             <Dashboard className='icon-title' />
                         </ListItemIcon>
-                        <ListItemText inset primary='Dashboard' className='text-title' />
+                        <ListItemText inset primary='DASHBOARD' className='text-title' />
                     </ListItem>
                 </List>
                 <hr />
@@ -126,12 +108,12 @@ function Sidebar() {
                         <ListSubheader component="div" className='title'>PROJECTS</ListSubheader>
                     }
                 >
-                    {/* LISTS */}
+                    {/* ADMIN */}
                     <ListItem button onClick={() => handleClick('list')} className='item-title'>
                         <ListItemIcon>
                             <PlaylistAddOutlined className='icon-title' />
                         </ListItemIcon>
-                        <ListItemText inset primary='LISTS' className='text-title' />
+                        <ListItemText inset primary='ADMIN' className='text-title' />
                         {openList ? <ExpandLess /> : <ExpandMore />}
                     </ListItem>
                     <Collapse in={openList} timeout="auto" unmountOnExit>
@@ -140,112 +122,31 @@ function Sidebar() {
                                 <ListItemIcon>
                                     <PersonOutlined className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='Users' className='text-subitem'/>
+                                <ListItemText inset primary='Usuários' className='text-subitem'/>
                             </ListItem>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItem component={props => <Link {...props} to="/products" />} button className='subitem'>
+                            <ListItem component={props => <Link {...props} to="/module" />} button className='subitem'>
                                 <ListItemIcon>
-                                    <Store className='icon-subitem'/>
+                                    <ViewModuleSharp className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='Products' className='text-subitem'/>
+                                <ListItemText inset primary='Módulo' className='text-subitem'/>
                             </ListItem>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItem component={props => <Link {...props} to="/orders" />} button className='subitem'>
+                            <ListItem component={props => <Link {...props} to="/factory" />} button className='subitem'>
                                 <ListItemIcon>
-                                    <CreditCard className='icon-subitem'/>
+                                    <FactorySharp className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='Orders' className='text-subitem'/>
+                                <ListItemText inset primary='Empresa' className='text-subitem'/>
                             </ListItem>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItem component={props => <Link {...props} to="/delivery" />} button className='subitem'>
+                            <ListItem component={props => <Link {...props} to="/todo" />} button className='subitem'>
                                 <ListItemIcon>
-                                    <LocalShipping className='icon-subitem'/>
+                                    <ListAlt className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='Delivery' className='text-subitem'/>
-                            </ListItem>
-                        </List>
-                    </Collapse>
-
-                    {/* USER ADMIN */}
-                    <ListItem button onClick={() => handleClick('user')} className='item-title'>
-                        <ListItemIcon>
-                            <PersonOutline className='icon-title' />
-                        </ListItemIcon>
-                        <ListItemText inset primary='USER ADMIN' className='text-title' />
-                        {openUser ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse in={openUser} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItem component={props => <Link {...props} to="/profile" />} button className='subitem'>
-                                <ListItemIcon>
-                                    <PermContactCalendar className='icon-subitem'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary='Profile' className='text-subitem'/>
-                            </ListItem>
-                        </List>
-                    </Collapse>
-
-                    {/* USERFUL */}
-                    <ListItem button onClick={() => handleClick('useful')} className='item-title'>
-                        <ListItemIcon>
-                            <QueryStatsOutlined className='icon-title' />
-                        </ListItemIcon>
-                        <ListItemText inset primary='USEFUL' className='text-title' />
-                        {openUseful ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse in={openUseful} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItem component={props => <Link {...props} to="/stats" />} button className='subitem'>
-                                <ListItemIcon>
-                                    <QueryStats className='icon-subitem'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary='Stats' className='text-subitem'/>
-                            </ListItem>
-                        </List>
-                        <List component="div" disablePadding>
-                            <ListItem button className='subitem' component={props => <Link {...props} to="/notifications" />}>
-                                <ListItemIcon className='icon'>
-                                    <NotificationsNone className='icon-subitem'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary='Notifications'  className='text-subitem'/>
-                            </ListItem>
-                        </List>
-                    </Collapse>
-
-                    {/* SETTINGS */}
-                    <ListItem button onClick={() => handleClick('system')} className='item-title'>
-                        <ListItemIcon>
-                            <SettingsSuggestOutlined className='icon-title' />
-                        </ListItemIcon>
-                        <ListItemText inset primary='SYSTEM' className='text-title' />
-                        {openSettings ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse in={openSettings} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItem component={props => <Link {...props} to="/health" />} button className='subitem'>
-                                <ListItemIcon>
-                                    <CloudCircle className='icon-subitem'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary='System Health' className='text-subitem'/>
-                            </ListItem>
-                        </List>
-                        <List component="div" disablePadding>
-                            <ListItem button className='subitem'  component={props => <Link {...props} to="/logs" />}>
-                                <ListItemIcon className='icon'>
-                                    <Psychology className='icon-subitem'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary='Logs'  className='text-subitem'/>
-                            </ListItem>
-                        </List>
-                        <List component="div" disablePadding>
-                            <ListItem button className='subitem'  component={props => <Link {...props} to="/settings" />}>
-                                <ListItemIcon className='icon'>
-                                    <Settings className='icon-subitem'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary='Settings'  className='text-subitem'/>
+                                <ListItemText inset primary='To do' className='text-subitem'/>
                             </ListItem>
                         </List>
                     </Collapse>
@@ -260,62 +161,35 @@ function Sidebar() {
                     </ListItem>
                     <Collapse in={openAtm} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            <ListItem component={props => <Link {...props} to="/banks" />} button className='subitem'>
+                            <ListItem component={props => <Link {...props} to="/atm/banks" />} button className='subitem'>
                                 <ListItemIcon>
                                     <AccountBalance className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='Banks' className='text-subitem'/>
+                                <ListItemText inset primary='Agências' className='text-subitem'/>
                             </ListItem>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItem button className='subitem' component={props => <Link {...props} to="/account" />}>
+                            <ListItem button className='subitem' component={props => <Link {...props} to="/atm/account" />}>
                                 <ListItemIcon className='icon'>
                                     <AccountBalanceWallet className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='Accounts'  className='text-subitem'/>
-                            </ListItem>
-                        </List>
-                    </Collapse>
-
-                    {/* PIZZA */}
-                    <ListItem button onClick={() => handleClick('pizza')} className='item-title'>
-                        <ListItemIcon>
-                            <SchoolOutlined className='icon-title' />
-                        </ListItemIcon>
-                        <ListItemText inset primary='DEFAULT' className='text-title'/>
-                        {openPizza ? <ExpandLess /> : <ExpandMore />}
-                    </ListItem>
-                    <Collapse in={openPizza} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <ListItem button className='subitem'>
-                                <ListItemIcon>
-                                    <ChildCare className='icon-subitem'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary='users'  className='text-subitem'/>
+                                <ListItemText inset primary='Contas'  className='text-subitem'/>
                             </ListItem>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItem button className='subitem'>
-                                <ListItemIcon>
-                                    <Psychology className='icon-subitem'/>
+                            <ListItem button className='subitem' component={props => <Link {...props} to="/atm/users" />}>
+                                <ListItemIcon className='icon'>
+                                    <PersonOutline className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='products'  className='text-subitem'/>
+                                <ListItemText inset primary='Usuários'  className='text-subitem'/>
                             </ListItem>
                         </List>
                         <List component="div" disablePadding>
-                            <ListItem button className='subitem'>
-                                <ListItemIcon>
-                                    <Settings className='icon-subitem'/>
+                            <ListItem button className='subitem' component={props => <Link {...props} to="/atm/attendance" />}>
+                                <ListItemIcon className='icon'>
+                                    <CurrencyExchange className='icon-subitem'/>
                                 </ListItemIcon>
-                                <ListItemText inset primary='orders'  className='text-subitem'/>
-                            </ListItem>
-                        </List>
-                        <List component="div" disablePadding>
-                            <ListItem button className='subitem'>
-                                <ListItemIcon>
-                                    <Psychology className='icon-subitem'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary='delivery'  className='text-subitem'/>
+                                <ListItemText inset primary='Atendimento'  className='text-subitem'/>
                             </ListItem>
                         </List>
                     </Collapse>
@@ -324,7 +198,7 @@ function Sidebar() {
                         <ListItemIcon>
                             <Logout className='icon-title' />
                         </ListItemIcon>
-                        <ListItemText inset primary='Logout' className='text-title'/>
+                        <ListItemText inset primary='LOGOUT' className='text-title'/>
                     </ListItem>
 
                 </List>
