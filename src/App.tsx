@@ -75,7 +75,7 @@ function App() {
                 index
                 element={
                   <RequireAuth>
-                    <List columns={todoColumns}  title="Todo" path="todos" />
+                    <List columns={todoColumns}  title="Todos" path="todos" />
                   </RequireAuth>
                 }
               />
