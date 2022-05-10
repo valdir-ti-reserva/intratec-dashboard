@@ -1,6 +1,22 @@
-import { AccountBalance, AccountBalanceWallet, AtmOutlined, CurrencyExchange, FactorySharp, ListAlt, PersonOutline, PersonOutlined, PlaylistAddOutlined, ViewModuleSharp } from "@mui/icons-material"
+import {
+  AccountBalance,
+  AccountBalanceWallet,
+  AtmOutlined,
+  CurrencyExchange,
+  FactorySharp,
+  ListAlt,
+  PersonOutline,
+  PersonOutlined,
+  PlaylistAddOutlined,
+  ViewModuleSharp
+} from "@mui/icons-material"
 
-export const DinamicTag = ({ icon, classname }: any) => {
+interface IDinamicTag {
+  icon: string
+  classname: string
+}
+
+export const DinamicTag = ({ icon, classname }: IDinamicTag) => {
   switch (icon) {
       case 'PlaylistAddOutlined': return <PlaylistAddOutlined className={classname} />
       case 'AtmOutlined': return <AtmOutlined className={classname} />

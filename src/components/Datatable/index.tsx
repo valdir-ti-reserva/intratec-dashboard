@@ -11,25 +11,8 @@ import './styles.scss'
 function Datatable({ columns, title, path }: any) {
 
     const [data, setData] = useState<any[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
     const confirm = useConfirm()
-
-    useEffect(() => {
-        //Listen (REALTIME)
-        const unsub = onSnapshot(
-            collection(db, path),
-            (snapshot) => {
-                let list: any = []
-                snapshot.docs.forEach(doc => {
-                    list.push({ id: doc.id, ...doc.data() })
-                })
-            setData(list)
-            }, (err) => {
-                console.log('Error=', err)
-            })
-        return () => {
-            unsub()
-        }
-    }, [path])
 
     const handleDelete = async (id: string) => {
         confirm({
@@ -75,6 +58,25 @@ function Datatable({ columns, title, path }: any) {
         }
     ]
 
+    useEffect(() => {
+        //Listen (REALTIME)
+        const unsub = onSnapshot(
+            collection(db, path),
+            (snapshot) => {
+                let list: any = []
+                snapshot.docs.forEach(doc => {
+                    list.push({ id: doc.id, ...doc.data() })
+                })
+                setData(list)
+                setLoading(false)
+            }, (err) => {
+                console.log('Error=', err)
+            })
+        return () => {
+            unsub()
+        }
+    }, [path])
+
   return (
     <div className="datatable">
         <div className="dataTableTitle">
@@ -83,14 +85,15 @@ function Datatable({ columns, title, path }: any) {
                 Add new
             </Link>
         </div>
-        <DataGrid
-            className='datagrid'
-            rows={data}
-            columns={columns.concat(actionColumn)}
-            pageSize={8}
-            rowsPerPageOptions={[8]}
-            checkboxSelection
-        />
+            <DataGrid
+                className='datagrid'
+                rows={data}
+                columns={columns.concat(actionColumn)}
+                pageSize={8}
+                rowsPerPageOptions={[8]}
+                checkboxSelection
+                loading={loading}
+            />
     </div>
   )
 }

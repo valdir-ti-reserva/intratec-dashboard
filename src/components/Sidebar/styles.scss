@@ -31,12 +31,22 @@
             line-height: 32px;
             padding: 0;
             margin-left: 10px;
+
         }
         span {
             margin-left: 8px;
             font-size: 13px;
             color: #888;
             font-weight: 600;
+        }
+
+        .loading-box {
+            display: flex;
+            justify-content: center;
+
+            .loading-icon {
+                color: #7451f8;
+            }
         }
     }
 

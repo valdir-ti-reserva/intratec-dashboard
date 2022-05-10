@@ -6,8 +6,9 @@ import {
     ExpandLess,
     ExpandMore,
 } from '@mui/icons-material'
-import { Collapse, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core'
+import { Box, Collapse, List, ListItem, ListItemIcon, ListItemText, ListSubheader } from '@material-ui/core'
 import { useConfirm } from 'material-ui-confirm'
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { DarkModeContext } from '../../context/darkmode/darkModeContext'
 import { AuthContext } from '../../context/authentication/authContext'
@@ -51,7 +52,17 @@ function Sidebar() {
     }
 
     const [menu, setMenu] = useState<any[]>([])
+    const [loading, setLoading] = useState<boolean>(true)
     const [openList , setOpenList] = useState<any>({})
+
+    const handleClick = (el: React.MouseEvent<HTMLDivElement>) => {
+        const target = el.currentTarget;
+        const attribute = target.getAttribute("data-id")
+        setOpenList((prev: { [x: string]: any }) => ({
+            ...prev,
+            [String(attribute)]: !prev[attribute || 0]
+        }));
+    }
 
     useEffect(() => {
 
@@ -64,6 +75,7 @@ function Sidebar() {
                     list.push({ id: doc.id, ...doc.data() })
                 })
                 setMenu(list)
+                setLoading(false)
             }, (err) => {
                 console.log('Error=', err)
             })
@@ -72,15 +84,6 @@ function Sidebar() {
         }
 
     }, [])
-
-    const handleClick = (el: React.MouseEvent<HTMLDivElement>) => {
-        const target = el.currentTarget;
-        const attribute = target.getAttribute("data-id")
-        setOpenList((prev: { [x: string]: any }) => ({
-            ...prev,
-            [String(attribute)]: !prev[attribute || 0]
-        }));
-    }
 
     return (
         <div className="sidebar">
@@ -114,28 +117,31 @@ function Sidebar() {
                     }
                 >
                     {/* DINAMIC MENU */}
-                    {menu.map((item, i) => (
-                        <React.Fragment key={item.id}>
-                            <ListItem data-id={item.id} button onClick={handleClick} className='item-title'>
-                                <ListItemIcon>
-                                    <DinamicTag icon={item.icon} classname='icon-title'/>
-                                </ListItemIcon>
-                                <ListItemText inset primary={item.title} className='text-title' />
-                                {openList[item.id] ? <ExpandLess /> : <ExpandMore />}
-                            </ListItem>
-                            <Collapse in={openList[item.id]} timeout="auto" unmountOnExit>
-                                {item.items.map((menu: any) => (
-                                    <List component="div" disablePadding key={menu.id}>
-                                        <ListItem component={props => <Link {...props} to={`/${menu.url}`} />} button className='subitem'>
-                                            <ListItemIcon>
-                                                <DinamicTag icon={menu.icon} classname='icon-subitem' />
-                                            </ListItemIcon>
-                                            <ListItemText inset primary={menu.title} className='text-subitem'/>
-                                        </ListItem>
-                                    </List>
-                                ))}
-                            </Collapse>
-                        </React.Fragment>
+                    {loading ?  <Box className='loading-box'>
+                                    <CircularProgress size={28} className='loading-icon'/>
+                                </Box> :
+                        menu.map((item) => (
+                            <React.Fragment key={item.id}>
+                                <ListItem data-id={item.id} button onClick={handleClick} className='item-title'>
+                                    <ListItemIcon>
+                                        <DinamicTag icon={item.icon} classname='icon-title'/>
+                                    </ListItemIcon>
+                                    <ListItemText inset primary={item.title} className='text-title' />
+                                    {openList[item.id] ? <ExpandLess /> : <ExpandMore />}
+                                </ListItem>
+                                <Collapse in={openList[item.id]} timeout="auto" unmountOnExit>
+                                    {item.items.map((menu: any) => (
+                                        <List component="div" disablePadding key={menu.id}>
+                                            <ListItem component={props => <Link {...props} to={`/${menu.url}`} />} button className='subitem'>
+                                                <ListItemIcon>
+                                                    <DinamicTag icon={menu.icon} classname='icon-subitem' />
+                                                </ListItemIcon>
+                                                <ListItemText inset primary={menu.title} className='text-subitem'/>
+                                            </ListItem>
+                                        </List>
+                                    ))}
+                                </Collapse>
+                            </React.Fragment>
                     ))}
 
                     <ListItem button onClick={() => handleLogout()} className='item-title'>
