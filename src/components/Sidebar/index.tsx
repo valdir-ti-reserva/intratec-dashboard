@@ -130,8 +130,8 @@ function Sidebar() {
                                     {openList[item.id] ? <ExpandLess /> : <ExpandMore />}
                                 </ListItem>
                                 <Collapse in={openList[item.id]} timeout="auto" unmountOnExit>
-                                    {item.items.map((menu: any) => (
-                                        <List component="div" disablePadding key={menu.id}>
+                                    {item.items.map((menu: any, i: number) => (
+                                        <List component="div" disablePadding key={item.items[i]}>
                                             <ListItem component={props => <Link {...props} to={`/${menu.url}`} />} button className='subitem'>
                                                 <ListItemIcon>
                                                     <DinamicTag icon={menu.icon} classname='icon-subitem' />
