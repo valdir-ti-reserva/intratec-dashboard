@@ -1,7 +1,11 @@
+import { useContext } from "react"
+
 import { Menu } from "@material-ui/icons"
 import { styled } from '@mui/material/styles'
 import { IconButton, Toolbar, Typography } from "@mui/material"
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
+
+import { DrawerContext } from '../../context/drawer/drawerContext'
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -28,14 +32,16 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
-const Navbar = ({ open, setOpen }: any) => {
+const Navbar = () => {
+
+    const { isOpen, dispatch } = useContext(DrawerContext)
 
     const handleDrawerOpen = () => {
-      setOpen(!open);
+        dispatch({ type: "DRAWER_TOGGLE" })
     };
 
     return (
-        <AppBar position="fixed" open={open}>
+        <AppBar position="fixed" open={isOpen}>
             <Toolbar>
             <IconButton
                 color="inherit"
@@ -44,7 +50,7 @@ const Navbar = ({ open, setOpen }: any) => {
                 edge="start"
                 sx={{
                     marginRight: 5,
-                    ...(open && { display: 'none' }),
+                    ...(isOpen && { display: 'none' }),
                 }}
             >
                 <Menu />

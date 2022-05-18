@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { useContext } from 'react'
 
 import {
   List,
@@ -15,6 +15,8 @@ import {
 } from '@mui/material'
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles'
 import { ChevronLeft, ChevronRight, Inbox, Mail } from '@material-ui/icons'
+
+import { DrawerContext } from './context/drawer/drawerContext'
 
 import { Navbar } from './components/Navbar'
 
@@ -68,20 +70,21 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 export default function MiniDrawer() {
+
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const { isOpen, dispatch } = useContext(DrawerContext)
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    dispatch({ type: "DRAWER_TOGGLE" })
   };
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Navbar open={open} setOpen={(prop: boolean) => setOpen(prop)}/>
-      <Drawer variant="permanent" open={open}>
+      <Navbar />
+      <Drawer variant="permanent" open={isOpen}>
         <DrawerHeader>
-          {open ?
+          {isOpen ?
             <>
               <h3>Intratec Tecnologia</h3>
               <IconButton onClick={handleDrawerClose}>
@@ -99,20 +102,20 @@ export default function MiniDrawer() {
               <ListItemButton
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
+                  justifyContent: isOpen ? 'initial' : 'center',
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : 'auto',
+                    mr: isOpen ? 3 : 'auto',
                     justifyContent: 'center',
                   }}
                 >
                   {index % 2 === 0 ? <Inbox /> : <Mail />}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text} sx={{ opacity: isOpen ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
@@ -124,20 +127,20 @@ export default function MiniDrawer() {
               <ListItemButton
                 sx={{
                   minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
+                  justifyContent: isOpen ? 'initial' : 'center',
                   px: 2.5,
                 }}
               >
                 <ListItemIcon
                   sx={{
                     minWidth: 0,
-                    mr: open ? 3 : 'auto',
+                    mr: isOpen ? 3 : 'auto',
                     justifyContent: 'center',
                   }}
                 >
                   {index % 2 === 0 ? <Inbox /> : <Mail />}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text} sx={{ opacity: isOpen ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
