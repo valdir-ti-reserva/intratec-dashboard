@@ -1,10 +1,22 @@
 import * as React from 'react'
+
+import {
+  List,
+  CssBaseline,
+  Typography,
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Drawer as MuiDrawer,
+  Box
+} from '@mui/material'
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles'
-import Box from '@mui/material/Box'
-import MuiDrawer from '@mui/material/Drawer'
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
-import {Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem, ListItemButton, ListItemIcon, ListItemText} from '@mui/material'
-import { Menu, ChevronLeft, ChevronRight, Inbox, Mail } from '@material-ui/icons'
+import { ChevronLeft, ChevronRight, Inbox, Mail } from '@material-ui/icons'
+
+import { Navbar } from './components/Navbar'
 
 const drawerWidth = 240;
 
@@ -38,28 +50,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   minHeight: '64px',
 }));
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(['width', 'margin'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     width: drawerWidth,
@@ -81,10 +71,6 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -92,31 +78,19 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: 5,
-              ...(open && { display: 'none' }),
-            }}
-          >
-            <Menu />
-          </IconButton>
-          <Typography variant="h6" component="div">
-            Mini variant drawer
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Navbar open={open} setOpen={(prop: boolean) => setOpen(prop)}/>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
-          <h3>Intratec Tecnologia</h3>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
-          </IconButton>
+          {open ?
+            <>
+              <h3>Intratec Tecnologia</h3>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
+              </IconButton>
+            </>
+            :
+            <h5>Intratec</h5>
+          }
         </DrawerHeader>
         <Divider />
         <List>
