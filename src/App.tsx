@@ -1,24 +1,50 @@
 import { useContext } from 'react'
+import {
+  Route,
+  Routes,
+  Navigate,
+  useNavigate,
+} from 'react-router-dom'
 
 import {
   List,
-  CssBaseline,
-  Typography,
   Divider,
-  IconButton,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
+  IconButton,
+  CssBaseline,
   ListItemText,
+  ListItemIcon,
+  ListItemButton,
   Drawer as MuiDrawer,
   Box
 } from '@mui/material'
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles'
-import { ChevronLeft, ChevronRight, Inbox, Mail } from '@material-ui/icons'
+import {
+  Theme,
+  styled,
+  useTheme,
+  CSSObject,
+} from '@mui/material/styles'
+import {
+  Mail,
+  Inbox,
+  ChevronLeft,
+  ChevronRight,
+} from '@material-ui/icons'
+
+import { New } from './pages/New'
+import { Home } from './pages/Home'
+import { List as ListComponent } from './pages/List'
+import { Login } from './pages/Login'
+import { Single } from './pages/Single'
+import { NotFound } from './components/NotFound'
+import { userInputs, todoInputs } from './formSource'
+import { todoColumns, userColumns } from './datatablesource'
 
 import { DrawerContext } from './context/drawer/drawerContext'
+import { AuthContext } from './context/authentication/authContext'
+import { DarkModeContext } from './context/darkmode/darkModeContext'
 
-import { Navbar } from './components/Navbar'
+import './style/dark.scss'
 
 const drawerWidth = 240;
 
@@ -71,28 +97,40 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export default function MiniDrawer() {
 
-  const theme = useTheme();
+  const theme = useTheme()
+  const navigate = useNavigate()
+
+  const { currentUser } = useContext(AuthContext)
+  const { darkMode } = useContext(DarkModeContext)
   const { isOpen, dispatch } = useContext(DrawerContext)
 
-  const handleDrawerClose = () => {
+  const RequireAuth = ({children}: any) => {
+    return currentUser ? (children) : <Navigate to='/login'/>
+  }
+
+  const handleDrawerClose = (e: any) => {
+    e.preventDefault()
     dispatch({ type: "DRAWER_TOGGLE" })
   };
+
+  const handleNavigateDashboard = () => {
+    navigate('/')
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Navbar />
       <Drawer variant="permanent" open={isOpen}>
         <DrawerHeader>
           {isOpen ?
             <>
-              <h3>Intratec Tecnologia</h3>
+              <h3 onClick={handleNavigateDashboard} style={{cursor: 'pointer'}}>Intratec Tecnologia</h3>
               <IconButton onClick={handleDrawerClose}>
                 {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
               </IconButton>
             </>
             :
-            <h5>Intratec</h5>
+            <h5 onClick={handleNavigateDashboard} style={{cursor: 'pointer'}}>Intratec</h5>
           }
         </DrawerHeader>
         <Divider />
@@ -148,20 +186,81 @@ export default function MiniDrawer() {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
+        <div className={darkMode ? "app dark" : "app"}>
+          <Routes>
+            <Route path="/">
+              <Route
+                path="login"
+                element={
+                  <Login />
+                }
+              />
+              <Route
+                index
+                element={
+                  <RequireAuth>
+                    <Home />
+                  </RequireAuth>
+                }
+              />
+              <Route path="users">
+                <Route
+                  index
+                  element={
+                    <RequireAuth>
+                      <ListComponent columns={userColumns}  title="Users" path="users"/>
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path=':userId'
+                  element={
+                    <RequireAuth>
+                      <Single />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path='new'
+                  element={
+                    <RequireAuth>
+                      <New title="Add new User" inputs={userInputs} path="users"/>
+                    </RequireAuth>
+                  }
+                />
+              </Route>
+
+              <Route path="todos">
+                <Route
+                  index
+                  element={
+                    <RequireAuth>
+                      <ListComponent columns={todoColumns}  title="Todos" path="todos" />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path=':todoId'
+                  element={
+                    <RequireAuth>
+                      <Single />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path='new'
+                  element={
+                    <RequireAuth>
+                      <New title="Add new Todo" inputs={todoInputs} path="todos" />
+                    </RequireAuth>
+                  }
+                />
+              </Route>
+
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </Box>
     </Box>
   );

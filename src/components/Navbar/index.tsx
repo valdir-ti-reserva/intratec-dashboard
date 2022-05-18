@@ -36,7 +36,8 @@ const Navbar = () => {
 
     const { isOpen, dispatch } = useContext(DrawerContext)
 
-    const handleDrawerOpen = () => {
+    const handleDrawerOpen = (e: any) => {
+        e.preventDefault()
         dispatch({ type: "DRAWER_TOGGLE" })
     };
 
