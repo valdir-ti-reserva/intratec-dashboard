@@ -2,7 +2,7 @@ import { List } from '../../components/Table'
 import { Chart } from '../../components/Chart'
 import { Navbar } from '../../components/Navbar'
 import { Widget } from '../../components/Widget'
-// import { Sidebar } from '../../components/Sidebar'
+import { Sidebar } from '../../components/Sidebar'
 import { FeaturedChart } from '../../components/FeaturedChart'
 
 import './styles.scss'
@@ -10,7 +10,7 @@ import './styles.scss'
 function Home() {
   return (
     <div className="home">
-        {/* <Sidebar /> */}
+        <Sidebar />
         <div className="homeContainer">
           <Navbar />
           <div className="widgets">
