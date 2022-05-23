@@ -10,10 +10,10 @@ import { styled } from '@mui/material/styles'
 
 import { New } from './pages/New'
 import { Home } from './pages/Home'
-import { List as ListComponent } from './pages/List'
 import { Login } from './pages/Login'
 import { Single } from './pages/Single'
 import { NotFound } from './components/NotFound'
+import { List as ListComponent } from './pages/List'
 import { userInputs, todoInputs } from './formSource'
 import { todoColumns, userColumns } from './datatablesource'
 
@@ -41,9 +41,9 @@ export default function MiniDrawer() {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+    <Box>
+      <Box component="main" sx={ currentUser && { flexGrow: 1, p: 3 }}>
+        {currentUser && <DrawerHeader />}
         <div className={darkMode ? "app dark" : "app"}>
           <Routes>
             <Route path="/">
@@ -114,7 +114,6 @@ export default function MiniDrawer() {
                   }
                 />
               </Route>
-
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
