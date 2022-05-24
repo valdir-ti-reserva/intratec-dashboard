@@ -1,75 +1,89 @@
-.navbar {
-    height: 50px;
-    border-bottom: 0.5px solid rgb(231, 228, 228);
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #555;
+#root > div > main > div.app > div > div.homeContainer > header > div {
+    min-height: 50px;
+}
 
-    .wrapper {
-        padding: 20px;
+.toolbar {
+    background-color: #fff;
+    justify-content: space-between;
+    min-height: 50px;
+
+    .edge-button {
+        color: #6439FF;
+    }
+
+    .navbar {
+        height: 50px;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        width: 100%;
+        font-size: 14px;
+        color: #555;
 
-        .search {
+        .wrapper {
+            padding: 20px;
             display: flex;
             align-items: center;
-            border: 0.5px solid lightgray;
-            padding: 5px;
-            border-radius: 5px;
+            justify-content: space-between;
+            width: 100%;
 
-            .search-icon {
-                cursor: pointer;
-            }
-
-            input {
-                border: 0;
-                outline: 0;
-                background-color: transparent;
-
-                &::placeholder{
-                    font-size: 12px;
-                }
-            }
-        }
-
-        .items {
-            display: flex;
-            align-items: center;
-
-            .item {
+            .search {
                 display: flex;
                 align-items: center;
-                margin-right: 20px;
-                position: relative;
-                cursor: pointer;
+                border: 0.5px solid lightgray;
+                padding: 5px;
+                border-radius: 5px;
+                margin-right: 40px;
 
-                .icon {
-                    font-size: 20px;
+                .search-icon {
+                    cursor: pointer;
                 }
 
-                .avatar {
-                    width: 30px;
-                    height: 30px;
-                    border-radius: 50%;                 
-                }
+                input {
+                    border: 0;
+                    outline: 0;
+                    background-color: transparent;
 
-                .counter {
-                    width: 15px;
-                    height: 15px;
-                    background-color: red;
-                    border-radius: 50%;
-                    color: #fff;
+                    &::placeholder{
+                        font-size: 12px;
+                    }
+                }
+            }
+
+            .items {
+                display: flex;
+                align-items: center;
+
+                .item {
                     display: flex;
                     align-items: center;
-                    justify-content: center;
-                    font-size: 10px;
-                    font-weight: bold;
-                    position: absolute;
-                    top: -5px;
-                    right: -5px;
+                    margin-right: 20px;
+                    position: relative;
+                    cursor: pointer;
+
+                    .icon {
+                        font-size: 20px;
+                    }
+
+                    .avatar {
+                        width: 30px;
+                        height: 30px;
+                        border-radius: 50%;
+                    }
+
+                    .counter {
+                        width: 15px;
+                        height: 15px;
+                        background-color: red;
+                        border-radius: 50%;
+                        color: #fff;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 10px;
+                        font-weight: bold;
+                        position: absolute;
+                        top: -5px;
+                        right: -5px;
+                    }
                 }
             }
         }

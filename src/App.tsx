@@ -28,7 +28,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
-  minHeight: '64px',
+  minHeight: '50px',
 }));
 
 export default function MiniDrawer() {
