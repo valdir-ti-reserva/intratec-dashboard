@@ -1,11 +1,11 @@
-#root > div > main > div.app > div > div.homeContainer > header > div {
+.MuiToolbar-root > .MuiToolbar-gutters > .MuiToolbar-regular > .toolbar > .css-1t29gy6-MuiToolbar-root {
     min-height: 50px;
 }
 
 .toolbar {
     background-color: #fff;
     justify-content: space-between;
-    min-height: 50px;
+    // max-height: 50px;
 
     .edge-button {
         color: #6439FF;
