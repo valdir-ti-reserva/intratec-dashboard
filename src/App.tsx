@@ -20,6 +20,7 @@ import { todoColumns, userColumns } from './datatablesource'
 import { AuthContext } from './context/authentication/authContext'
 import { DarkModeContext } from './context/darkmode/darkModeContext'
 
+import './App.scss'
 import './style/dark.scss'
 
 const DrawerHeader = styled('div')(({ theme }) => ({
