@@ -18,13 +18,11 @@ import {
 import {
     Theme,
     styled,
-    useTheme,
     CSSObject,
   } from '@mui/material/styles'
 import {
     Drawer as MuiDrawer
 } from '@mui/material'
-import { useConfirm } from 'material-ui-confirm'
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { DinamicTag } from '../DinamicTag'
@@ -91,36 +89,11 @@ function Sidebar() {
 
     const { dispatch: DarkDispatch } = useContext(DarkModeContext);
     const { dispatch: AuthDispatch } = useContext(AuthContext);
-    const { isOpen, dispatch } = useContext(DrawerContext)
+    const { isOpen } = useContext(DrawerContext)
 
     const navigate = useNavigate()
-    // const theme = useTheme()
-
-    const confirm = useConfirm()
-
     const handleLogout = () => {
-        confirm({
-            title: 'Atenção',
-            description: 'Deseja realmente sair?',
-            confirmationText: 'Sim',
-            cancellationText: 'Não',
-            cancellationButtonProps: {
-                style: {
-                  background: '#ff000091',
-                  color: 'white',
-                  fontWeight: 'bold'
-                }
-              },
-              confirmationButtonProps: {
-                style: {
-                  background: '#008000cc',
-                  color: 'white',
-                  fontWeight: 'bold'
-                }
-              }
-        }).then(async () => {
             AuthDispatch({type:"LOGOUT"})
-        }).catch(() => console.log("Operação cancelada pelo usuário."))
     }
 
     const [menu, setMenu] = useState<any[]>([])
@@ -157,11 +130,6 @@ function Sidebar() {
 
     }, [])
 
-    // const handleDrawerClose = (e: any) => {
-    //     e.preventDefault()
-    //     dispatch({ type: "DRAWER_TOGGLE" })
-    //   };
-
     const handleNavigateDashboard = () => {
     navigate('/')
     }
@@ -173,10 +141,7 @@ function Sidebar() {
                     <DrawerHeader>
                         {isOpen ?
                             <>
-                            <h3 onClick={handleNavigateDashboard} className="logo">Intratec Tecnologia</h3>
-                            {/* <IconButton onClick={handleDrawerClose}>
-                                {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
-                            </IconButton> */}
+                                <h3 onClick={handleNavigateDashboard} className="logo">Intratec Tecnologia</h3>
                             </>
                             :
                             <h5 onClick={handleNavigateDashboard} className="logo-closed">Intratec</h5>

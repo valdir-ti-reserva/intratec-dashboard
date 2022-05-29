@@ -13,7 +13,7 @@ import {
     Settings,
     Logout
 } from "@mui/icons-material"
-import { styled, useTheme } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import { ChevronLeft, ChevronRight } from "@material-ui/icons"
 import { IconButton, Toolbar, Typography } from "@mui/material"
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
@@ -54,8 +54,6 @@ const AppBar = styled(MuiAppBar, {
 
 const Navbar = () => {
 
-    const confirm = useConfirm()
-
     const { isOpen, dispatch: DrawerDispatch } = useContext(DrawerContext)
     const { darkMode, dispatch: DarkModeDispatch } = useContext(DarkModeContext);
 
@@ -88,28 +86,7 @@ const Navbar = () => {
       }
 
       const handleLogout = () => {
-        confirm({
-          title: 'Atenção',
-          description: 'Deseja realmente sair?',
-          confirmationText: 'Sim',
-          cancellationText: 'Não',
-          cancellationButtonProps: {
-              style: {
-                background: '#ff0000',
-                color: 'white',
-                fontWeight: 'bold'
-              }
-            },
-            confirmationButtonProps: {
-              style: {
-                background: '#008000',
-                color: 'white',
-                fontWeight: 'bold'
-              }
-            }
-        }).then(async () => {
             AuthDispatch({type:"LOGOUT"})
-        }).catch(() => console.log("Operação cancelada pelo usuário."))
     }
 
     return (
